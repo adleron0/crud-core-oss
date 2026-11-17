@@ -1,0 +1,19 @@
+// Schema mínimo para rodar a suíte de conformidade contra Postgres real.
+generator client {
+  provider = "prisma-client-js"
+  output   = "./client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("CRUD_CORE_PG_URL")
+}
+
+model ConformanceRow {
+  id         Int       @id @default(autoincrement())
+  name       String
+  price      Int
+  archivedAt DateTime?
+  scope      Int       @default(1)
+  code       String?   @unique
+}

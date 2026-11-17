@@ -1,0 +1,89 @@
+{
+  "name": "@adleron/crud-core",
+  "version": "0.3.0",
+  "description": "Núcleo de CRUD genérico declarativo: rotas opt-in, permissão obrigatória, escopo multi-tenant, auditoria e parser de filtros — agnóstico de ORM e de framework.",
+  "license": "UNLICENSED",
+  "private": false,
+  "type": "commonjs",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js"
+    },
+    "./testing": {
+      "types": "./dist/testing/index.d.ts",
+      "require": "./dist/testing/index.js"
+    },
+    "./prisma": {
+      "types": "./dist/adapters/prisma/index.d.ts",
+      "require": "./dist/adapters/prisma/index.js"
+    },
+    "./nestjs": {
+      "types": "./dist/nestjs/index.d.ts",
+      "require": "./dist/nestjs/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "docs"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:cov": "vitest run --coverage",
+    "prepublishOnly": "pnpm typecheck && pnpm test && pnpm build",
+    "verify": "pnpm typecheck && pnpm test",
+    "test:integration": "prisma generate --schema test/prisma/schema.prisma && prisma db push --schema test/prisma/schema.prisma --skip-generate --accept-data-loss && vitest run src/adapters/prisma/prisma.integration.spec.ts"
+  },
+  "peerDependencies": {
+    "@nestjs/common": ">=10",
+    "@prisma/client": ">=5",
+    "vitest": ">=2"
+  },
+  "peerDependenciesMeta": {
+    "@nestjs/common": {
+      "optional": true
+    },
+    "@prisma/client": {
+      "optional": true
+    },
+    "vitest": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@nestjs/common": "^11.2.3",
+    "@prisma/client": "^6.19.3",
+    "@types/node": "^22.20.5",
+    "@vitest/coverage-v8": "^3.2.4",
+    "prisma": "^6.19.3",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "typesVersions": {
+    "*": {
+      "testing": [
+        "./dist/testing/index.d.ts"
+      ],
+      "prisma": [
+        "./dist/adapters/prisma/index.d.ts"
+      ],
+      "nestjs": [
+        "./dist/nestjs/index.d.ts"
+      ]
+    }
+  }
+}
